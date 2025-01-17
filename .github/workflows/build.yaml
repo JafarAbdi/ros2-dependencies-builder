@@ -24,7 +24,6 @@ jobs:
           DEB_DISTRO: ${{ env.DEB_DISTRO }}
           ROS_DISTRO: ${{ env.ROS_DISTRO }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SKIP_ROS_REPOSITORY: true
           SBUILD_CONF: |
             $enable_network = 1;
           SQUASH_HISTORY: true
@@ -49,7 +48,7 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=raw,value=${{ env.ROS_DISTRO }}-${{ env.SYNC_DATESTAMP }}
+            type=raw,value=${{ env.ROS_DISTRO }}
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
