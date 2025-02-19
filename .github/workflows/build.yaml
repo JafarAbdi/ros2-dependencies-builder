@@ -4,9 +4,6 @@ on:
   workflow_dispatch:
   push:
 
-env:
-  ROS_DISTRO: humble
-
 permissions:
   contents: write
   packages: write
@@ -15,17 +12,22 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        DEB_ARCH: [amd64, arm64]
     env:
       DEB_DISTRO: jammy
+      ROS_DISTRO: humble
     steps:
       - name: ROS buildfarm
         uses: jspricke/ros-deb-builder-action@main
         with:
           DEB_DISTRO: ${{ env.DEB_DISTRO }}
           ROS_DISTRO: ${{ env.ROS_DISTRO }}
+          DEB_ARCH: ${{ matrix.DEB_ARCH }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SBUILD_CONF: |
             $enable_network = 1;
           SQUASH_HISTORY: true
           REPOS_FILE: sources.repos
-          PACKAGES_BRANCH: stable
+          PACKAGES_BRANCH: ${{ env.ROS_DISTRO }}-${{ matrix.DEB_ARCH }}
