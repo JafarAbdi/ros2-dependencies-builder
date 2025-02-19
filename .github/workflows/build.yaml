@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-24.04
     strategy:
       matrix:
-        DEB_ARCH: [amd64, arm64]
+        DEB_ARCH: [amd64]
     env:
       DEB_DISTRO: jammy
       ROS_DISTRO: humble
